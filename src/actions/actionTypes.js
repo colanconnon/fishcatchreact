@@ -1,0 +1,3 @@
+export const LOAD_LAKES_SUCCESS = "LOAD_LAKES_SUCCESS";
+
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";

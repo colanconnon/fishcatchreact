@@ -23,7 +23,11 @@ export default {
   plugins: [
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin());
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.ProvidePlugin({
+            'Promise': 'es6-promise', 
+            'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+        })
   ],
   module: {
     loaders: [

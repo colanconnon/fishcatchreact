@@ -22,6 +22,10 @@ export default {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.html
     new ExtractTextPlugin('styles.css'),
+     new webpack.ProvidePlugin({
+            'Promise': 'es6-promise', 
+            'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+        }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin()
   ],
