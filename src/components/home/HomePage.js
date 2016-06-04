@@ -1,7 +1,4 @@
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
-
-
 
 class HomePage extends React.Component {
      constructor(props, context) {
