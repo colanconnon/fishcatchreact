@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import fetch from 'isomorphic-fetch';
 import toastr from 'toastr';
 
@@ -41,6 +41,7 @@ class LoginComponent extends React.Component {
 
         }).then(() => {
             toastr.success("You are now logged in", "Success");
+            this.context.router.push('/');
         }).catch(error => {
             throw (error);
         });
@@ -67,5 +68,8 @@ class LoginComponent extends React.Component {
     }
 }
 
+LoginComponent.contextTypes = {
+  router: PropTypes.object.isRequired  
+};
 
 export default (LoginComponent);

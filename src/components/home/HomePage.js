@@ -20,9 +20,7 @@ class HomePage extends React.Component {
    
 }
 
-HomePage.propTypes = {
-    actions: PropTypes.object.isRequired
-};
+
 
 HomePage.contextTypes = {
   router: PropTypes.object.isRequired  
