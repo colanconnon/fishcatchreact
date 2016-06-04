@@ -1,8 +1,5 @@
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
-import {bindActionCreators} from 'redux';
-import * as loginActions from '../../actions/loginActions';
-import {connect} from 'react-redux';
 
 
 
@@ -34,15 +31,5 @@ HomePage.contextTypes = {
   router: PropTypes.object.isRequired  
 };
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(loginActions, dispatch)
-    };
-}
 
-function mapStateToProps(state, ownProps) {
-    console.log(state);
-
-}
-
-export default connect(mapDispatchToProps)(HomePage);
+export default (HomePage);

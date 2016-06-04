@@ -1,7 +1,5 @@
 import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as loginActions from '../../actions/loginActions';
+import fetch from 'isomorphic-fetch';
 import toastr from 'toastr';
 
 
@@ -19,22 +17,35 @@ export class LoginComponent extends React.Component {
     }
 
     updateUsername(event) {
-        
+
         return this.setState({ username: event.target.value });
     }
     updatePassword(event) {
-        
+
         return this.setState({ password: event.target.value });
     }
     Login(e) {
         e.preventDefault();
         console.log(this.state);
-        this.props.actions.login(this.state.username, this.state.password).then((result) => {
-            toastr.success("You are now logged in","Sucess");
-        }).catch((err) => {
-            toastr.error("Incorrect username or password", "Error");
+        fetch('http://localhost:3005/public/api/user/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password
+            })
+        }).then((result) => {
+            return result.json();
+
+        }).then((result) => {
+            console.log({token: result.token, username: result.username });
+        }).catch(error => {
+            throw (error);
         });
-        
+
     }
 
     render() {
@@ -54,15 +65,5 @@ export class LoginComponent extends React.Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    console.log(state);
-    return {};
-}
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(loginActions, dispatch)
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
+export default (LoginComponent);
