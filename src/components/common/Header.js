@@ -12,17 +12,15 @@ class Header extends React.Component {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="#">Project name</a>
+                        <Link to="/" className="navbar-brand">Fishtracker</Link>
                     </div>
                     <div id="navbar" className="navbar-collapse collapse">
                         <ul className="nav navbar-nav">
                             <li>
                                 <IndexLink to="/" activeClassName="active">Home </IndexLink>
-                       
                             </li>
                             <li>
                                 <Link to="/login" activeClassName="active">Login </Link>
-                             
                             </li>
                         </ul>
 

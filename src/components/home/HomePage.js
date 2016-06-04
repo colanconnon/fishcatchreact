@@ -4,7 +4,6 @@ class HomePage extends React.Component {
      constructor(props, context) {
         super(props, context);
      }
-   
     componentDidMount() {
        
     }
@@ -13,15 +12,10 @@ class HomePage extends React.Component {
             <div>
                 <h1> FishTracker </h1>
                 <p> Testing fishtracker using react and redux</p>
-            
             </div>
         );
-    }
-   
+    }  
 }
-
-
-
 HomePage.contextTypes = {
   router: PropTypes.object.isRequired  
 };
