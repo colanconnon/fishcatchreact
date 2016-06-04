@@ -3,7 +3,6 @@ import fetch from 'isomorphic-fetch';
 
 
 export function loginSuccess(user) {
-    console.log(user);
     return { type: types.LOGIN_SUCCESS, user };
 }
 

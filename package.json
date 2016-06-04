@@ -21,9 +21,11 @@
     "test:cover:travis": "babel-node isparta cover --root src --report lcovonly _mocha -- --require ./tools/testSetup.js \"src/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls.js",
     "test:watch": "npm run test -- --watch"
   },
-  "author": "Cory House",
+  "author": "Colan Connon",
   "license": "MIT",
   "dependencies": {
+    "bootswatch": "3.3.6",
+    "jquery": "2.2.3",
     "object-assign": "4.1.0",
     "react": "15.0.2",
     "react-dom": "15.0.2",

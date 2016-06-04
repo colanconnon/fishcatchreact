@@ -1,12 +1,16 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
+import Header from './common/Header';
 
 class App extends React.Component {
     render() {
         return (
-          <div className="container-fluid">
+          <span>
+          <Header />
+          <div className="container">
             {this.props.children}
-          </div>  
+          </div> 
+          </span>
         );
     }
 }
@@ -18,4 +22,4 @@ App.propTypes = {
 function mapStateToProps(state, ownProps) {
   
 }
-export default connect(mapStateToProps)(App);
+export default (App);
