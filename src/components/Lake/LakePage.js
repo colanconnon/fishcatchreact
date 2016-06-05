@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import fetch from 'isomorphic-fetch';
-
+import { Link } from 'react-router';
 
 class LakePage extends React.Component {
     constructor(props, context) {
@@ -30,15 +30,22 @@ class LakePage extends React.Component {
     render() {
         let lakes = this.state.lakes.map(lake => {
             return (
-                <div key={lake.id} className="lake">
-                    {lake.lakename}
+            <div key={lake.id} className="col-md-4">
+                <div className="card">
+                    <div className="content">
+                        <h3>Lake Name: {lake.lakename}</h3>
+
+                    </div>
+                    <div className="action">
+                            <Link to={"/lake/" + lake.id} activeClassName="active">View Details </Link>
+                    </div>
                 </div>
+            </div>
             );
         });
         return (
             <div>
-                <h1> FishTracker </h1>
-                <p> Lakes Page</p>
+                <h1> Your Lakes </h1>
                 {lakes}
             </div>
         );

@@ -4,6 +4,7 @@ import App from './components/App';
 import HomePage from './components/home/HomePage';
 import LoginComponent from './components/login/LoginComponent';
 import LakePage from './components/Lake/LakePage';
+import ViewLakePage from './components/Lake/ViewLakePage';
 import LogoutPage from './components/Logout/LogoutPage';
 
 export default (
@@ -12,5 +13,7 @@ export default (
         <Route path="login" component={LoginComponent} />
         <Route path="lakes" component={LakePage} />
         <Route path="logout" component={LogoutPage} />
+        <Route path="lake/:id" component={ViewLakePage} />     
+
     </Route>
 );
