@@ -12,6 +12,9 @@ class Header extends React.Component {
                             <li>
                                 <Link to="/lakes" activeClassName="active">Lakes </Link>
                             </li>
+                             <li>
+                                <Link to="/logout" activeClassName="active">Logout </Link>
+                            </li>
                         </ul>;
         } else {
              navLinks =   <ul className="nav navbar-nav">

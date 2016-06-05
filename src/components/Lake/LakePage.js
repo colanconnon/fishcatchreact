@@ -21,7 +21,6 @@ class LakePage extends React.Component {
             }
         }).then((result) => {
             return result.json();
-
         }).then((result) => {
             this.setState({ lakes: result.lakes });
         }).catch(error => {
