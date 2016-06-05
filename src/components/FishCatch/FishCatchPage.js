@@ -1,21 +1,24 @@
-import React, {PropTypes} from 'react';
+import React, {Component} from 'react';
 import fetch from 'isomorphic-fetch';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
-class LakePage extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-        this.lakeUrl = 'http://localhost:3005/api/lakes/getlakes';
+class FishCatchPage extends Component {
+    constructor(props) {
+        super(props);
+        this.Url = 'http://localhost:3005/api/fishcatch/getall';
         this.state = {
-            lakes: []
+            fishCatches: [],
+            loading: false
         };
     }
+    
     componentDidMount() {
-        this.fetchLakes();
+        this.fetchFishCatches();
     }
     
-    fetchLakes() {
-        fetch(this.lakeUrl, {
+    fetchFishCatches() {
+        this.setState({loading: true});
+        fetch(this.Url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -25,16 +28,19 @@ class LakePage extends React.Component {
         }).then((result) => {
             return result.json();
         }).then((result) => {
-            this.setState({ lakes: result.lakes });
+            console.log(result);
+            this.setState({ fishCatches: result.fishCatches, loading: false });
         }).catch(error => {
+            this.setState({loading: false});
             throw (error);
         });
     }
+    
     render() {
-        let lakes = this.state.lakes.map((lake, index) => {
+          let fishCatches = this.state.fishCatches.map((fishcatch, index) => {
             console.log(index % 3);
             return (
-            <div  key={lake.id}>
+            <div  key={fishcatch.id}>
             {function(){
                     if (index % 3 == 0) {
                         return <div className="clearfix"></div>
@@ -43,11 +49,12 @@ class LakePage extends React.Component {
                 <div className="col-md-4">
                     <div className="card">
                         <div className="content">
-                            <h4>Lake Name: {lake.lakename}</h4>
-                            
+                            <h4>Lake Name: {fishcatch.lakename}</h4>
+                            <p> Latitude: {fishcatch.latitude}</p>
+                            <p> Longitude: {fishcatch.longitude} </p>
                         </div>
                         <div className="action">
-                                <Link to={"/lake/" + lake.id} activeClassName="active">View Details </Link>
+                            <a href="#"> View Details </a>
                         </div>
                     </div>
                 </div>
@@ -57,20 +64,15 @@ class LakePage extends React.Component {
         });
         return (
             <div>
-                <h1> Your Lakes </h1>
+                <h1> Your Fish Catches</h1>
                 <br />
-                <Link to="/newlake" className="btn btn-primary" activeClassName="active">Create a new lake </Link>
+                <a href="#" className="btn btn-primary" activeClassName="active">Create a new fishcatch </a>
                 <br />
                 <br />
-                {lakes}
+                {fishCatches}
             </div>
         );
     }
 }
 
-LakePage.contextTypes = {
-    router: PropTypes.object.isRequired
-};
-
-
-export default (LakePage);
+export default FishCatchPage;

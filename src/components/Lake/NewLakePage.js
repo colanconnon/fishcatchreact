@@ -38,7 +38,7 @@ class NewLakePage extends Component {
             return result.json();
 
         }).then(() => {
-            toastr.success("Fish Catch Successfully inserted", "Success");
+            toastr.success("New Lake Successfully inserted", "Success");
             this.setState({saving: false});
             this.context.router.push('/lakes');
         }).catch(error => {

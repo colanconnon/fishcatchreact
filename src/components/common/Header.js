@@ -8,7 +8,9 @@ class Header extends React.Component {
                             <li>
                                 <IndexLink to="/" activeClassName="active">Home </IndexLink>
                             </li>
-                           
+                           <li>
+                                <Link to="/fishcatch" activeClassName="active">Fish Catch</Link>
+                            </li>
                             <li>
                                 <Link to="/lakes" activeClassName="active">Lakes </Link>
                             </li>
