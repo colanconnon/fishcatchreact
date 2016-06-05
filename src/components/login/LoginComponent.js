@@ -6,7 +6,7 @@ import toastr from 'toastr';
 class LoginComponent extends React.Component {
     constructor(props, context) {
         super(props, context);
-
+       
         this.state = {
             username: "",
             password: ""
@@ -39,8 +39,11 @@ class LoginComponent extends React.Component {
         }).then((result) => {
             return result.json();
 
-        }).then(() => {
+        }).then((result) => {
+            console.log(result);
             toastr.success("You are now logged in", "Success");
+            this.props.login("Hello");
+            localStorage.setItem('Token', result.token),
             this.context.router.push('/');
         }).catch(error => {
             throw (error);

@@ -2,6 +2,28 @@ import React from 'react';
 import { Link, IndexLink } from 'react-router';
 class Header extends React.Component {
     render() {
+        var navLinks;
+        if(this.props.loggedIn){
+            navLinks =   <ul className="nav navbar-nav">
+                            <li>
+                                <IndexLink to="/" activeClassName="active">Home </IndexLink>
+                            </li>
+                           
+                            <li>
+                                <Link to="/lakes" activeClassName="active">Lakes </Link>
+                            </li>
+                        </ul>;
+        } else {
+             navLinks =   <ul className="nav navbar-nav">
+                            <li>
+                                <IndexLink to="/" activeClassName="active">Home </IndexLink>
+                            </li>
+                            <li>
+                                <Link to="/login" activeClassName="active">Login </Link>
+                            </li>
+                            
+                        </ul>;
+        }
         return (
             <nav className="navbar navbar-default navbar-static-top">
                 <div className="container">
@@ -15,15 +37,8 @@ class Header extends React.Component {
                         <Link to="/" className="navbar-brand">Fishtracker</Link>
                     </div>
                     <div id="navbar" className="navbar-collapse collapse">
-                        <ul className="nav navbar-nav">
-                            <li>
-                                <IndexLink to="/" activeClassName="active">Home </IndexLink>
-                            </li>
-                            <li>
-                                <Link to="/login" activeClassName="active">Login </Link>
-                            </li>
-                        </ul>
-
+                      {navLinks}
+                        
                     </div>
                 </div>
             </nav>
