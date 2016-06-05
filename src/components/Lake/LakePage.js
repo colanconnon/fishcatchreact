@@ -46,6 +46,10 @@ class LakePage extends React.Component {
         return (
             <div>
                 <h1> Your Lakes </h1>
+                <br />
+                <Link to="/newlake" className="btn btn-primary" activeClassName="active">Create a new lake </Link>
+                <br />
+                <br />
                 {lakes}
             </div>
         );
