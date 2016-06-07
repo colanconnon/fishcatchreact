@@ -1,7 +1,7 @@
 {
-  "name": "react-slingshot",
-  "version": "4.0.0",
-  "description": "Starter kit for creating apps with React and Redux",
+  "name": "reactFishTracker",
+  "version": "1.0.0",
+  "description": "An application for tracking fish catches",
   "scripts": {
     "remove-demo": "babel-node tools/removeDemo.js",
     "start-message": "babel-node tools/startMessage.js",
@@ -91,7 +91,6 @@
     "starter"
   ],
   "repository": {
-    "type": "git",
-    "url": "https://github.com/coryhouse/react-slingshot"
+    "type": "git"
   }
 }
