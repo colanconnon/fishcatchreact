@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import fetch from 'isomorphic-fetch';
-// import { Link } from 'react-router';
+import { Link } from 'react-router';
 
 class FishCatchPage extends Component {
     constructor(props) {
@@ -66,7 +66,7 @@ class FishCatchPage extends Component {
             <div>
                 <h1> Your Fish Catches</h1>
                 <br />
-                <a href="#" className="btn btn-primary" activeClassName="active">Create a new fishcatch </a>
+                <Link to="/newfishcatch" className="btn btn-primary" activeClassName="active">Create a new fish catch </Link>
                 <br />
                 <br />
                 {fishCatches}

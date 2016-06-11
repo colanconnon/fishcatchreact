@@ -8,6 +8,7 @@ import ViewLakePage from './components/Lake/ViewLakePage';
 import LogoutPage from './components/Logout/LogoutPage';
 import NewLakePage from './components/Lake/NewLakePage';
 import FishCatchPage from './components/FishCatch/FishCatchPage';
+import NewFishCatchPage from './components/FishCatch/NewFishCatchPage';
 
 export default (
     <Route path="/" component={App}>
@@ -17,6 +18,7 @@ export default (
         <Route path="logout" component={LogoutPage} />
         <Route path="lake/:id" component={ViewLakePage} />
         <Route path="newlake" component={NewLakePage} />  
-        <Route path="fishcatch" component={FishCatchPage} />   
+        <Route path="fishcatch" component={FishCatchPage} />  
+        <Route path="newFishCatch" component={NewFishCatchPage} /> 
     </Route>
 );
