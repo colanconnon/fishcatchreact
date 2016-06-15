@@ -30,6 +30,7 @@
     "object-assign": "4.1.0",
     "react": "15.0.2",
     "react-dom": "15.0.2",
+    "react-gmaps": "1.5.0",
     "react-router": "2.4.0",
     "toastr": "2.1.2"
   },

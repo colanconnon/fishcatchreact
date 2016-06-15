@@ -9,6 +9,7 @@ import LogoutPage from './components/Logout/LogoutPage';
 import NewLakePage from './components/Lake/NewLakePage';
 import FishCatchPage from './components/FishCatch/FishCatchPage';
 import NewFishCatchPage from './components/FishCatch/NewFishCatchPage';
+import ViewFishCatchPage from './components/FishCatch/ViewFishCatchPage';
 
 export default (
     <Route path="/" component={App}>
@@ -20,5 +21,6 @@ export default (
         <Route path="newlake" component={NewLakePage} />  
         <Route path="fishcatch" component={FishCatchPage} />  
         <Route path="newFishCatch" component={NewFishCatchPage} /> 
+        <Route path="viewFishCatch/:id" component={ViewFishCatchPage} />
     </Route>
 );

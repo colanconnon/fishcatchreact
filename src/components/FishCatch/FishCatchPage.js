@@ -54,7 +54,7 @@ class FishCatchPage extends Component {
                             <p> Longitude: {fishcatch.longitude} </p>
                         </div>
                         <div className="action">
-                            <a href="#"> View Details </a>
+                            <Link to={"/viewFishCatch/"+ fishcatch.id}> View Details </Link>
                         </div>
                     </div>
                 </div>
