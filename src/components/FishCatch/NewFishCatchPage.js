@@ -1,14 +1,16 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Gmaps, Marker} from 'react-gmaps';
 import fetch from 'isomorphic-fetch';
 import toastr from 'toastr';
-
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 class NewFishCatchPage extends Component {
     constructor(props) {
         super(props);
         this.lakeUrl = 'http://localhost:3005/api/lakes/getlakes';
-    
+        this.fishCatchPostUrl = 'http://localhost:3005/api/fishcatch/insert';
+
         this.state = {
             latitude: "",
             longitude: "",
@@ -16,7 +18,9 @@ class NewFishCatchPage extends Component {
             details: "",
             lakeId: "",
             markers: [],
-            lakes: []
+            lakes: [],
+            saving: false,
+            date: moment()
         };
         this.coords = {
             lat: 38.22091976683121,
@@ -26,13 +30,15 @@ class NewFishCatchPage extends Component {
         this.handleSave = this.handleSave.bind(this);
     }
     onMapClick(event) {
-        this.setState({latitude: event.latLng.lat(), longitude: event.latLng.lng(), 
-            markers: [{latitude: event.latLng.lat(), longitude: event.latLng.lng() }] });
+        this.setState({
+            latitude: event.latLng.lat(), longitude: event.latLng.lng(),
+            markers: [{ latitude: event.latLng.lat(), longitude: event.latLng.lng() }]
+        });
     }
     componentDidMount() {
         this.fetchLakes();
     }
-    
+
 
     fetchLakes() {
         fetch(this.lakeUrl, {
@@ -51,19 +57,43 @@ class NewFishCatchPage extends Component {
         });
     }
     handleSave() {
-        toastr.success("You have saved the fish catch in the database","Success");
+        this.setState({saving: true});
+        fetch(this.fishCatchPostUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+            },
+            body: JSON.stringify({
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
+                lake_id: this.state.lakeId,
+                details: this.state.details,
+                temperature: this.state.temperature
+            })
+        }).then((result) => {
+            return result.json();            
+        }).then((result) => {
+            toastr.success("You have saved the fish catch in the database", "Success");
+            this.setState({saving: false});
+            this.context.router.push('/fishcatch');
+        }).catch((error) => {
+            this.setState({saving: false});
+            toastr.error("Error saving the fish catch, please check all fields and try again", "ERROR");
+        });
     }
 
     render() {
-         const selectOptions = this.state.lakes.map(lake => {
+        const selectOptions = this.state.lakes.map(lake => {
             return <option value={lake.id}> {lake.lakename} </option>;
-            
+
         });
         const markers = this.state.markers.map(mapItem => {
-            return  <Marker
-          lat={mapItem.latitude}
-          lng={mapItem.longitude}
-          />;
+            return <Marker
+                lat={mapItem.latitude}
+                lng={mapItem.longitude}
+                />;
         });
         return (
             <div>
@@ -108,10 +138,18 @@ class NewFishCatchPage extends Component {
                 </div>
                 <div className="form-group">
                     <label> Select Lake </label>
-                    <select value={this.state.lakeId} onChange={(event) => {this.setState({lakeId: event.target.value })}} className="form-control">
+                    <select value={this.state.lakeId} onChange={(event) => { this.setState({ lakeId: event.target.value }) } } className="form-control">
                         <option value=""> Select a lake </option>
                         {selectOptions}
                     </select>
+                </div>
+                <div className="form-group">
+                    <label> Date </label>
+                    <DatePicker
+                     className="form-control"
+                     selected={this.state.date} 
+                     onChange={(date) => {this.setState({date:date})}} 
+                     />
                 </div>
                 <div className="form-group">
                     <label>Details </label>
@@ -124,12 +162,16 @@ class NewFishCatchPage extends Component {
                     </textarea>
                 </div>
                 <br />
-                <input type="button" className="btn btn-primary btn-lg" onClick={this.handleSave} value="Save" />
+                <input type="button" className="btn btn-primary btn-lg" onClick={this.handleSave} value={this.state.saving ? 'Saving...' : 'Save'}  />
                 <br />
                 <br />
             </div>
         );
     }
 }
+NewFishCatchPage.contextTypes = {
+  router: PropTypes.object.isRequired  
+};
+
 
 export default NewFishCatchPage;
