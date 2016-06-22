@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import fetch from 'isomorphic-fetch';
 import { Link } from 'react-router';
 import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
+import moment from 'moment';
 
 class ViewLakePage extends Component {
     constructor(props) {

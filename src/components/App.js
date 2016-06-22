@@ -27,7 +27,7 @@ class App extends React.Component {
         return (
             <span>
                 <Header loggedIn={this.state.loggedIn} />
-                <div className="container">
+                <div style={{marginBottom: "60px"}}>
                     {component}
                 </div>
             </span>

@@ -70,7 +70,8 @@ class NewFishCatchPage extends Component {
                 longitude: this.state.longitude,
                 lake_id: this.state.lakeId,
                 details: this.state.details,
-                temperature: this.state.temperature
+                temperature: this.state.temperature,
+                date: new moment(this.state.date).format()
             })
         }).then((result) => {
             return result.json();            

@@ -1,53 +1,112 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import fetch from 'isomorphic-fetch';
+import {Promise} from 'es6-promise';
 import { Link } from 'react-router';
+import moment from 'moment';
 
 class FishCatchPage extends Component {
     constructor(props) {
         super(props);
+        this.lakeUrl = 'http://localhost:3005/api/lakes/getlakes';
         this.Url = 'http://localhost:3005/api/fishcatch/getall';
         this.state = {
             allFishCatches: [],
             fishCatches: [],
-            loading: false
+            loading: false,
+            lakes: [],
+            lake_id: 'null',
+            month: 'null'
         };
-        
         this.search = this.search.bind(this);
+        this.lakeSearch = this.lakeSearch.bind(this);
+        this.displayResults = this.displayResults.bind(this);
+        this.loadData = this.loadData.bind(this);
+
     }
 
     componentDidMount() {
-        this.fetchFishCatches();
+        var params = this.props.location.query;
+        this.setState({month: params.month, lake_id: params.lake_id})
+        this.loadData();
+    }
+    componentWillReceiveProps(nextProps) {
+        var params = nextProps.location.query;
+        this.setState({month: params.month, lake_id: params.lake_id}, this.displayResults);
+
     }
 
-    fetchFishCatches() {
-        this.setState({ loading: true });
-        fetch(this.Url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('Token')
-            }
-        }).then((result) => {
-            return result.json();
-        }).then((result) => {
-            this.setState({ fishCatches: result.fishCatches, allFishCatches: result.fishCatches, loading: false });
-        }).catch(error => {
-            this.setState({ loading: false });
-            throw (error);
+    loadData() {
+        var promise1 = new Promise((resolve, reject) => {
+            fetch(this.Url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                }
+            }).then((result) => {
+                return result.json();
+            }).then((result) => {
+                resolve(result);
+            }).catch(error => {
+                this.setState({ loading: false });
+                throw (error);
+            });
+        });
+
+        var promise2 = new Promise((resolve, reject) => {
+            fetch(this.lakeUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                }
+            }).then((result) => {
+                return result.json();
+            }).then((result) => {
+                resolve(result);
+            }).catch(error => {
+                throw (error);
+            })
+        });
+
+        Promise.all([promise1, promise2]).then(values => {
+            this.setState({ allFishCatches:values[0].fishCatches, fishCatches: values[0].fishCatches, lakes: values[1].lakes }, this.displayResults);
+        }, function (reason) {
+            console.log(reason)
         });
     }
-    search(event) {
-        let searchString = event.target.value.toUpperCase();
-        let fishCatches = this.state.allFishCatches;
-        fishCatches = fishCatches.filter(x => x.lakename.toUpperCase().includes(searchString));
 
-        this.setState({fishCatches: fishCatches});
+    lakeSearch(event) {
+        if (event.target.value != 'null') {
+            this.context.router.push({ pathname: 'fishcatch', query: { month: this.props.location.query.month, lake_id: event.target.value }});
+        }
+    }
+    displayResults() {
+        let fishCatches = this.state.allFishCatches;
+      
+        if (this.state.lake_id != 'null') {
+            fishCatches = fishCatches.filter(x => {
+                return x.lake_id == this.state.lake_id && moment(x.date_caught).month() == this.state.month
+            });
+            console.log(this.state);
+            console.log(fishCatches);
+
+        }
+        this.setState({ fishCatches: fishCatches });
 
     }
+    search(event) {
+        if (event.target.value != 'null') {
+            this.context.router.push({ pathname: 'fishcatch', query: { month: event.target.value, lake_id: this.props.location.query.lake_id } });
+        }
+    }
     render() {
-        let fishCatches = this.state.fishCatches.map((fishcatch, index) => {
-            console.log(index % 3);
+        const selectOptions = this.state.lakes.map(lake => {
+            return <option key={lake.id} value={lake.id}> {lake.lakename} </option>;
+        });
+        const fishCatches = this.state.fishCatches.map((fishcatch, index) => {
             return (
                 <div  key={fishcatch.id}>
                     {function () {
@@ -73,21 +132,53 @@ class FishCatchPage extends Component {
         });
         return (
             <div>
-                <h1> Your Fish Catches</h1>
-                <br />
-                <Link to="/newfishcatch" className="btn btn-primary" activeClassName="active">Create a new fish catch </Link>
-                <br />
-                <br />
-                <br />
-                <div className="form-group">
-                    <label> Search: </label>
-                    <input onChange={this.search} type="text" className="form-control" />
+                <div className="container">
+                    <h1> Your Fish Catches</h1>
+                    <br />
+                    <Link to="/newfishcatch" className="btn btn-primary" activeClassName="active">Create a new fish catch </Link>
+                    <br />
+                    <br />
+                    <br />
                 </div>
-                
-                {fishCatches}
+                <div className="container-fluid">
+                    <div className="col-md-2">
+                        <div className="form-group">
+                            <label> Select Lake: </label>
+                            <select onChange={this.lakeSearch} className="form-control">
+                                <option value="null">--- Select Lake---</option>
+                                {selectOptions}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Select Month: </label>
+                            <select onChange={this.search} className="form-control">
+                                <option value="null">--- Select Month--- </option>
+                                <option value="0">Januarary</option>
+                                <option value="1">Feburary</option>
+                                <option value="2">March</option>
+                                <option value="3">April</option>
+                                <option value="4">May</option>
+                                <option value="5">June</option>
+                                <option value="6">July</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>
+                                <option value="9">October</option>
+                                <option value="10">November</option>
+                                <option value="11">December</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="col-md-10">
+                        {fishCatches}
+                    </div>
+                </div>
             </div>
         );
     }
 }
+FishCatchPage.contextTypes = {
+    router: PropTypes.object.isRequired
+};
 
 export default FishCatchPage;

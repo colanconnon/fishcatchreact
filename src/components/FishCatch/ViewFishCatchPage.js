@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import fetch from 'isomorphic-fetch';
 import { Link } from 'react-router';
 import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
-
+import moment from 'moment';
 
 class FishCatchPage extends Component {
     constructor(props) {
@@ -13,6 +13,7 @@ class FishCatchPage extends Component {
             latitude: "",
             longitude: "",
             temperature: "",
+            date: "",
             details: "",
             loading: false
         };
@@ -42,7 +43,8 @@ class FishCatchPage extends Component {
                 longitude: result.longitude,
                 temperature: result.temperature,
                 details: result.details,
-                lakename: result.lakename
+                lakename: result.lakename,
+                date: (result.date_caught === null ? "" : new moment(result.date_caught).utc().format('MMMM Do YYYY'))
             });
         }).catch(error => {
             this.setState({ loading: false });
@@ -51,7 +53,7 @@ class FishCatchPage extends Component {
     }
 
     render() {
-       
+       console.log(this.state);
         return (
             <div>
                 <h1> Fish Catch</h1>
@@ -65,6 +67,7 @@ class FishCatchPage extends Component {
                 <p><strong>Longitude: </strong>  {this.state.longitude} </p>
                 <p><strong>Temperature: </strong>  {this.state.temperature}</p>
                 <p><strong>Details: </strong> {this.state.details} </p>
+                <p> <strong> Date: </strong> {this.state.date}</p>
                 <Gmaps
                     width={'800px'}
                     height={'600px'}
