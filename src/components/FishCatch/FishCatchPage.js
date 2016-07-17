@@ -14,8 +14,8 @@ class FishCatchPage extends Component {
             fishCatches: [],
             loading: false,
             lakes: [],
-            lake_id: 'null',
-            month: 'null'
+            lake_id: null,
+            month: null
         };
         this.search = this.search.bind(this);
         this.lakeSearch = this.lakeSearch.bind(this);
@@ -24,14 +24,17 @@ class FishCatchPage extends Component {
 
     }
 
+
     componentDidMount() {
         var params = this.props.location.query;
-        this.setState({month: params.month, lake_id: params.lake_id})
+        if (params.lake_id != null) {
+            this.setState({ month: params.month, lake_id: params.lake_id })
+        }
         this.loadData();
     }
     componentWillReceiveProps(nextProps) {
         var params = nextProps.location.query;
-        this.setState({month: params.month, lake_id: params.lake_id}, this.displayResults);
+        this.setState({ month: params.month, lake_id: params.lake_id }, this.displayResults);
 
     }
 
@@ -72,7 +75,7 @@ class FishCatchPage extends Component {
         });
 
         Promise.all([promise1, promise2]).then(values => {
-            this.setState({ allFishCatches:values[0].fishCatches, fishCatches: values[0].fishCatches, lakes: values[1].lakes }, this.displayResults);
+            this.setState({ allFishCatches: values[0].fishCatches, fishCatches: values[0].fishCatches, lakes: values[1].lakes }, this.displayResults);
         }, function (reason) {
             console.log(reason)
         });
@@ -80,22 +83,34 @@ class FishCatchPage extends Component {
 
     lakeSearch(event) {
         if (event.target.value != 'null') {
-            this.context.router.push({ pathname: 'fishcatch', query: { month: this.props.location.query.month, lake_id: event.target.value }});
+            this.context.router.push({ pathname: 'fishcatch', query: { month: this.props.location.query.month, lake_id: event.target.value } });
         }
     }
     displayResults() {
         let fishCatches = this.state.allFishCatches;
-      
-        if (this.state.lake_id != 'null') {
-            fishCatches = fishCatches.filter(x => {
-                return x.lake_id == this.state.lake_id && moment(x.date_caught).month() == this.state.month
-            });
-            console.log(this.state);
-            console.log(fishCatches);
 
+        if (this.state.lake_id != null) {
+            fishCatches = fishCatches.filter(x => {
+                return x.lake_id == this.state.lake_id
+            });
+            if (this.state.month != null) {
+                fishCatches = fishCatches.filter(x => {
+                    if (x.date_caught != 'null') {
+                        return moment(x.date_caught).month() == this.state.month;
+                    } else {
+                        return x;
+                    }
+                });
+            }
+        } else if (this.state.month != null) {
+            fishCatches = fishCatches.filter(x => {
+                console.log(x.date_caught);
+                if (x.date_caught != null) {
+                    return moment(x.date_caught).month() == this.state.month;
+                }
+            });
         }
         this.setState({ fishCatches: fishCatches });
-
     }
     search(event) {
         if (event.target.value != 'null') {

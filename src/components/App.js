@@ -22,6 +22,7 @@ class App extends React.Component {
         this.state.loggedIn = false;
     }
     render() {
+        //clone the element and and login and logout to it.
         let component = cloneElement(this.props.children, Object.assign({}, ...this.props.children.props, { login: this.login, logout: this.logout }));
 
         return (

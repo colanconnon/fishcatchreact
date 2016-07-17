@@ -97,7 +97,7 @@ class NewFishCatchPage extends Component {
                 />;
         });
         return (
-            <div>
+            <div className="container">
                 <h1> New Fish Catch </h1>
                 <h4> Click on map to select location of the catch </h4>
                 <br />

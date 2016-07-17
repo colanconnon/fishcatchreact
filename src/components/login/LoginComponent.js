@@ -42,7 +42,7 @@ class LoginComponent extends React.Component {
         }).then((result) => {
             console.log(result);
             toastr.success("You are now logged in", "Success");
-            this.props.login("Hello");
+            this.props.login();
             localStorage.setItem('Token', result.token),
             this.context.router.push('/');
         }).catch(error => {

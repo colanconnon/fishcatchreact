@@ -55,7 +55,7 @@ class FishCatchPage extends Component {
     render() {
        console.log(this.state);
         return (
-            <div>
+            <div className="container">
                 <h1> Fish Catch</h1>
                 <br />
                 <Link to="/fishcatch" activeClassName="active" className="btn btn-primary">Back to Fish Catches</Link>
